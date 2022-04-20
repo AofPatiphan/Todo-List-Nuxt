@@ -52,7 +52,6 @@ export default {
             if (res.status === 200 && this.item.todos_active) {
                 this.successTodo.splice(idx, 1, res.data.update_todos.returning[0]);
             }
-            console.log(this.isEdit)
 
             this.isEdit.pop()
 

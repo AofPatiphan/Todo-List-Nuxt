@@ -42,7 +42,6 @@ export const updateTodo = async (id, input, status) => {
       input,
       status,
     });
-    console.log(res);
     return res;
   } catch (err) {
     console.log(err);
