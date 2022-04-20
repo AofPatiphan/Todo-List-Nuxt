@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="!isLoading">
         <nav class="bg-gray-500">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
@@ -18,7 +18,7 @@
                                 <div class="mr-10 flex items-baseline">
                                     <a href="#"
                                         class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">
-                                        Dashboard
+                                        {{ username }}
                                     </a>
                                 </div>
                             </div>
@@ -74,16 +74,6 @@
             </div>
             <div :class="[isOpen ? '' : 'hidden', 'md:hidden']">
                 <div class="px-2 pt-2 pb-3 sm:px-3">
-                    <a href="#"
-                        class="block px-3 py-2 rounded-md text-base font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">Dashboard</a>
-                    <a href="#"
-                        class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Team</a>
-                    <a href="#"
-                        class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Projects</a>
-                    <a href="#"
-                        class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Calendar</a>
-                    <a href="#"
-                        class="mt-1 block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Reports</a>
                 </div>
                 <div class="pt-4 pb-3 border-t border-gray-700">
                     <div class="flex items-center px-5">
@@ -109,11 +99,14 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getUserData } from '../utils/userApi'
+// import axios from '../config/axios'
 export default {
     data() {
         return {
-            isOpen: false
+            isOpen: false,
+            username: '',
+            isLoading: false
         }
     },
     methods: {
@@ -124,7 +117,13 @@ export default {
         async handleClickLogout() {
             await this.$auth.logout()
             this.$router.replace({ name: 'login' })
-        }
+        },
+
+    },
+    async mounted() {
+        this.isLoading = true
+        this.username = await getUserData()
+        this.isLoading = false
     }
 
 }
