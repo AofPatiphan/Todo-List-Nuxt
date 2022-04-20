@@ -33,9 +33,19 @@
                 </div> -->
 
                 <div>
-                    <button type="submit"
+                    <button type="submit" v-if="!isLogin"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                         Sign in
+                    </button>
+                    <button type="submit" v-if="isLogin"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <svg class="h-5 w-5 text-blue-500 animate-spin" width="24" height="24" viewBox="0 0 24 24"
+                            stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" />
+                            <path d="M9 4.55a8 8 0 0 1 6 14.9m0 -4.45v5h5" />
+                            <path d="M11 19.95a8 8 0 0 1 -5.3 -12.8" stroke-dasharray=".001 4.13" />
+                        </svg>
                     </button>
                     <button type="button" @click="handleClickToRegister"
                         class="group relative w-full flex justify-center my-4 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
@@ -56,14 +66,17 @@ export default {
         return {
             login: {
                 username: '',
-                password: ''
-            }
+                password: '',
+            },
+            isLogin: false
         }
     },
     methods: {
         async userLogin() {
             try {
+                this.isLogin = true
                 const response = await this.$auth.loginWith('local', { data: this.login })
+                this.isLogin = false
                 if (response.status === 200) {
                     this.$router.replace({ name: 'index' })
                 }

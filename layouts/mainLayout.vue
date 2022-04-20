@@ -1,5 +1,5 @@
 <template>
-    <div v-if="!isLoading">
+    <div>
         <nav class="bg-gray-500">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="flex items-center justify-between h-16">
@@ -15,11 +15,22 @@
 
                             <!-- Menu -->
                             <div class="hidden md:block">
-                                <div class="mr-10 flex items-baseline">
-                                    <a href="#"
-                                        class="px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700">
+
+                                <div class="mr-5 flex items-baseline">
+                                    <div class="flex px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700"
+                                        v-if="!username">
+                                        <svg class="h-5 w-5 text-blue-500 animate-spin" width="24" height="24"
+                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" />
+                                            <path d="M9 4.55a8 8 0 0 1 6 14.9m0 -4.45v5h5" />
+                                            <path d="M11 19.95a8 8 0 0 1 -5.3 -12.8" stroke-dasharray=".001 4.13" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex px-3 py-2 rounded-md text-sm font-medium text-white bg-gray-900 focus:outline-none focus:text-white focus:bg-gray-700"
+                                        v-if="username">
                                         {{ username }}
-                                    </a>
+                                    </div>
                                 </div>
                             </div>
 
@@ -42,11 +53,22 @@
                                     leave-to-class="transform opacity-0 scale-95">
                                     <div v-show="isOpen"
                                         class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg">
-                                        <div class="py-1 rounded-md bg-white shadow-xs" role="menu"
+                                        <div class="py-1 rounded-md bg-white shadow-xs hover:cursor-pointer" role="menu"
                                             aria-orientation="vertical" aria-labelledby="user-menu">
-                                            <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                                role="menuitem" @click="handleClickLogout">Sign
-                                                out</a>
+                                            <span class="block px-4 py-2 text-sm text-gray-700 " role="menuitem"
+                                                @click="handleClickLogout" v-if="!isLogout">Sign
+                                                out</span>
+                                            <div class="px-4 py-2" v-if="isLogout">
+                                                <svg class="h-5 w-5 mx-auto text-blue-500 animate-spin" width="24"
+                                                    height="24" viewBox="0 0 24 24" stroke-width="2"
+                                                    stroke="currentColor" fill="none" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" />
+                                                    <path d="M9 4.55a8 8 0 0 1 6 14.9m0 -4.45v5h5" />
+                                                    <path d="M11 19.95a8 8 0 0 1 -5.3 -12.8"
+                                                        stroke-dasharray=".001 4.13" />
+                                                </svg>
+                                            </div>
                                         </div>
                                     </div>
                                 </transition>
@@ -106,7 +128,7 @@ export default {
         return {
             isOpen: false,
             username: '',
-            isLoading: false
+            isLogout: false
         }
     },
     methods: {
@@ -115,15 +137,15 @@ export default {
             this.isOpen = !this.isOpen
         },
         async handleClickLogout() {
+            this.isLogout = true
             await this.$auth.logout()
+            this.isLogout = false
             this.$router.replace({ name: 'login' })
         },
 
     },
     async mounted() {
-        this.isLoading = true
         this.username = await getUserData()
-        this.isLoading = false
     }
 
 }
