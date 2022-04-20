@@ -90,7 +90,6 @@ export default {
         handleClickEdit() {
             if (this.isEdit.length) { this.isEdit.pop() }
             else if (!this.isEdit.length) { this.isEdit.push('test') }
-            console.log(this.isEdit)
         }
     },
     mounted() {
