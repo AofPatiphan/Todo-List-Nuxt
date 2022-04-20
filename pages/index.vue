@@ -6,30 +6,35 @@
         <div class="grid grid-cols-3 gap-4 h-full">
           <div class="border-4 border-dashed border-gray-200 rounded-lg h-fit py-3">
             <div class="text-xl text-center font-bold">Create Todo</div>
-            <CreateForm />
+            <CreateForm v-bind:pendingTodo="pendingTodo" />
           </div>
-          <div class="border-4 border-dashed border-gray-200 rounded-lg h-fit py-3">
+          <div class="border-4 border-dashed border-gray-200 rounded-lg h-fit py-3 relative">
+            <div v-if="!openEdit" @click="handleClickOpenEdit">
+              <OpenEditIcon />
+            </div>
+            <div v-if="openEdit" @click="handleClickOpenEdit">
+              <CloseEditIcon />
+            </div>
             <div class="text-xl text-center font-bold mb-8">Pending</div>
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-
+            <div class="text-center font-bold text-slate-300" v-if="!pendingTodo.length">
+              Empty
+            </div>
+            <TodoItem v-for=" item in pendingTodo" :key="item.id" v-bind:item="item" v-bind:pendingTodo="pendingTodo"
+              v-bind:successTodo="successTodo" v-bind:openEdit="openEdit" />
           </div>
-          <div class="border-4 border-dashed border-gray-200 rounded-lg h-fit py-3">
-            <div class="text-xl text-center font-bold mb-8">Success</div>
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
-            <TodoItem />
+          <div class="border-4 border-dashed border-gray-200 rounded-lg h-fit py-3 relative">
+            <div v-if="!openEdit" @click="handleClickOpenEdit">
+              <OpenEditIcon />
+            </div>
+            <div v-if="openEdit" @click="handleClickOpenEdit">
+              <CloseEditIcon />
+            </div>
+            <div class="text-xl text-center font-bold mb-8">Done</div>
+            <div class="text-center font-bold text-slate-300" v-if="!successTodo.length">
+              Empty
+            </div>
+            <TodoItem v-for="item in successTodo" :key="item.id" v-bind:item="item" v-bind:pendingTodo="pendingTodo"
+              v-bind:successTodo="successTodo" v-bind:openEdit="openEdit" />
           </div>
         </div>
         <!-- /End replace -->
@@ -39,9 +44,10 @@
 </template>
 
 <script>
-import axios from '../config/axios'
+import { getTodo } from '../utils/todoApi'
 import CreateForm from '../components/CreateForm.vue'
 import TodoItem from '../components/TodoItem.vue'
+import CloseEditIcon from '../components/CloseEditIcon.vue'
 export default {
   middleware: "auth",
   head: {
@@ -50,12 +56,24 @@ export default {
   data() {
     return {
       pendingTodo: [],
-      successTodo: []
+      successTodo: [],
+      openEdit: false
     };
   },
   layout: "MainLayout",
-  mounted() {
+  async mounted() {
+    const res = await getTodo()
+    const pending = res.data.todos.filter(item => item.todos_active === false)
+    const success = res.data.todos.filter(item => item.todos_active === true)
+    this.pendingTodo = pending
+    this.successTodo = success
+
   },
-  components: { CreateForm, TodoItem }
+  components: { CreateForm, TodoItem, CloseEditIcon },
+  methods: {
+    handleClickOpenEdit() {
+      this.openEdit = !this.openEdit
+    }
+  }
 }
 </script>

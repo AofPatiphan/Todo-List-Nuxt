@@ -122,6 +122,7 @@
 
 <script>
 import { getUserData } from '../utils/userApi'
+import { addTodo } from '../utils/todoApi'
 // import axios from '../config/axios'
 export default {
     data() {
@@ -137,15 +138,25 @@ export default {
             this.isOpen = !this.isOpen
         },
         async handleClickLogout() {
-            this.isLogout = true
-            await this.$auth.logout()
-            this.isLogout = false
-            this.$router.replace({ name: 'login' })
+            try {
+                this.isLogout = true
+                await this.$auth.logout()
+                this.isLogout = false
+                this.$router.replace({ name: 'login' })
+            } catch (err) {
+                console.log(err)
+            }
+
         },
 
     },
     async mounted() {
-        this.username = await getUserData()
+        try {
+            const res = await getUserData()
+            this.username = res.name
+        } catch (err) {
+            console.log(err)
+        }
     }
 
 }
