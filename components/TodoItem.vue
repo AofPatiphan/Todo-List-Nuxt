@@ -25,7 +25,7 @@
             <EditForm v-bind:isEdit="isEdit" v-bind:item="item" v-bind:pendingTodo="pendingTodo"
                 v-bind:successTodo="successTodo" />
         </div>
-        <div v-if="!isEdit.length">
+        <div class="whitespace-normal break-words w-5/6" v-if="!isEdit.length">
             {{ item.todos_list }}
         </div>
     </div>
