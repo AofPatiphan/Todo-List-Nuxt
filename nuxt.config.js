@@ -60,6 +60,14 @@ export default {
     },
   },
 
+  serverMiddleware: [
+    "~/server/firstTest/index.js",
+    {
+      path: "api",
+      handler: "~/server/api",
+    },
+  ],
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     postcss: {
