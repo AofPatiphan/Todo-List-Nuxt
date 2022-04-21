@@ -7,12 +7,18 @@
             <EditIcon />
         </div>
         <div class="mr-2 hover:cursor-pointer" @click="handleClickStatus" v-if="!isEdit.length">
-            <svg :class="{ 'text-gray-500': !item.todos_active, 'text-green-500': item.todos_active }" class="h-8 w-8  "
+            <svg :class="{ 'text-gray-500': !item.todos_active, 'text-green-500': item.todos_active }" class="h-8 w-8"
                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                stroke-linecap="round" stroke-linejoin="round">
+                stroke-linecap="round" stroke-linejoin="round" v-if="!isEditStatus">
                 <path stroke="none" d="M0 0h24v24H0z" />
                 <circle cx="12" cy="12" r="9" />
                 <path d="M9 12l2 2l4 -4" />
+            </svg>
+            <svg class="h-8 w-8 text-white-500 animate-spin" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" v-if="isEditStatus">
+                <path stroke="none" d="M0 0h24v24H0z" />
+                <path d="M9 4.55a8 8 0 0 1 6 14.9m0 -4.45v5h5" />
+                <path d="M11 19.95a8 8 0 0 1 -5.3 -12.8" stroke-dasharray=".001 4.13" />
             </svg>
         </div>
         <div class="flex-1" v-if="isEdit.length">
@@ -33,7 +39,8 @@ import EditForm from './EditForm.vue'
 export default {
     data() {
         return {
-            isEdit: []
+            isEdit: [],
+            isEditStatus: false
         };
     },
     props: {
@@ -70,6 +77,7 @@ export default {
             }
         },
         async handleClickStatus() {
+            this.isEditStatus = true
             let idx;
             if (!this.item.todos_active) {
                 idx = this.pendingTodo.findIndex(i => i.id === this.item.id);
@@ -86,6 +94,7 @@ export default {
                 this.successTodo.splice(idx, 1);
                 this.pendingTodo.unshift(res.data.update_todos.returning[0]);
             }
+            this.isEditStatus = false
         },
         handleClickEdit() {
             if (this.isEdit.length) { this.isEdit.pop() }

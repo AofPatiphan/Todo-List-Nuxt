@@ -40,9 +40,7 @@
                                     <button @click="toggle"
                                         class="max-w-xs flex items-center text-sm rounded-full text-white focus:outline-none focus:shadow-solid"
                                         id="user-menu" aria-label="User menu" aria-haspopup="true">
-                                        <img class="h-8 w-8 rounded-full"
-                                            src="https://res.cloudinary.com/dbtlgaii3/image/upload/v1644336153/Gift/Profile_avatar_placeholder_large_tafrpo.png"
-                                            alt>
+                                        <img class="h-8 w-8 rounded-full" :src="profileUrl" alt>
                                     </button>
                                 </div>
                                 <transition enter-active-class="transition ease-out duration-100"
@@ -100,12 +98,10 @@
                 <div class="pt-4 pb-3 border-t border-gray-700">
                     <div class="flex items-center px-5">
                         <div class="flex-shrink-0">
-                            <img class="h-10 w-10 rounded-full"
-                                src="https://res.cloudinary.com/dbtlgaii3/image/upload/v1644336153/Gift/Profile_avatar_placeholder_large_tafrpo.png"
-                                alt>
+                            <img class="h-10 w-10 rounded-full" :src="profileUrl" alt>
                         </div>
                         <div class="ml-3">
-                            <div class="text-base font-medium leading-none text-white">Tom Cook</div>
+                            <div class="text-base font-medium leading-none text-white">{{ username }}</div>
                         </div>
                     </div>
                     <div class="mt-3 px-2">
@@ -121,14 +117,13 @@
 </template>
 
 <script>
-import { getUserData } from '../utils/userApi'
-import { addTodo } from '../utils/todoApi'
-// import axios from '../config/axios'
+import { getMe } from '../utils/userApi'
 export default {
     data() {
         return {
             isOpen: false,
             username: '',
+            profileUrl: '',
             isLogout: false
         }
     },
@@ -152,8 +147,11 @@ export default {
     },
     async mounted() {
         try {
-            const res = await getUserData()
-            this.username = res.name
+            const res = await getMe()
+            console.log(res.data.users)
+            this.username = res.data.users[0].username
+            this.profileUrl = res.data.users[0].profileUrl
+            console.log(this.profileUrl)
         } catch (err) {
             console.log(err)
         }

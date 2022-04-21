@@ -11,9 +11,19 @@
                     placeholder="Write your order here" v-model="todo" />
             </div>
             <div class="mt-3 w-5/6 flex justify-center mx-auto">
-                <button type="submit"
+                <button type="submit" v-if="!isAdd"
                     class="group relative w-full flex justify-center my-4 py-2 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                     Submit
+                </button>
+                <button type="submit" v-if="isAdd"
+                    class="group relative w-full flex justify-center my-4 py-2 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                    <svg class="h-5 w-5 text-white-500 animate-spin" width="24" height="24" viewBox="0 0 24 24"
+                        stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" />
+                        <path d="M9 4.55a8 8 0 0 1 6 14.9m0 -4.45v5h5" />
+                        <path d="M11 19.95a8 8 0 0 1 -5.3 -12.8" stroke-dasharray=".001 4.13" />
+                    </svg>
                 </button>
             </div>
         </div>
@@ -26,7 +36,8 @@ import { addTodo } from '../utils/todoApi'
 export default {
     data() {
         return {
-            todo: ''
+            todo: '',
+            isAdd: false
         }
     },
     props: {
@@ -37,11 +48,13 @@ export default {
     },
     methods: {
         async handleClickAddTodo() {
+            this.isAdd = true
             const res = await addTodo(this.todo)
             if (res) {
                 this.pendingTodo.unshift(res.data.insert_todos_one)
                 this.todo = ''
             }
+            this.isAdd = false
         }
     },
 }
