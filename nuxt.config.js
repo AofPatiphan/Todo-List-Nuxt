@@ -51,10 +51,13 @@ export default {
             method: "post",
           },
           logout: {
-            url: "https://todohmx.herokuapp.com/signout",
+            url: "https://todolist-hx.netlify.app/api/signout",
             method: "delete",
           },
-          user: { url: "https://todohmx.herokuapp.com/user/me", method: "get" },
+          user: {
+            url: "https://todolist-hx.netlify.app/api/user/me",
+            method: "get",
+          },
         },
       },
     },
