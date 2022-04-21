@@ -24,7 +24,7 @@ export const getMe = async () => {
 
 export const uploadImg = async (base64EncodedImage) => {
   try {
-    const res = await axios.post("https://todohmx.herokuapp.com/upload", {
+    const res = await axios.post("http://localhost:3000/api/upload", {
       data: base64EncodedImage,
     });
     return res;

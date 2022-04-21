@@ -51,11 +51,11 @@ export default {
             method: "post",
           },
           logout: {
-            url: "https://todolist-hx.netlify.app/api/signout",
+            url: "http://localhost:3000/api/signout",
             method: "delete",
           },
           user: {
-            url: "https://todolist-hx.netlify.app/api/user/me",
+            url: "http://localhost:3000/api/user/me",
             method: "get",
           },
         },
@@ -64,7 +64,6 @@ export default {
   },
 
   serverMiddleware: [
-    "~/server/firstTest/index.js",
     {
       path: "api",
       handler: "~/server/api",
