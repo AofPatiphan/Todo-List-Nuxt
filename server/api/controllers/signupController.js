@@ -23,7 +23,6 @@ const execute = async (variables) => {
     }),
   });
   const data = await fetchResponse.json();
-  console.log("DEBUG: ", data);
   return data;
 };
 

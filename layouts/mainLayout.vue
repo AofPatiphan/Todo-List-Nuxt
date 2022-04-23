@@ -148,10 +148,8 @@ export default {
     async mounted() {
         try {
             const res = await getMe()
-            console.log(res.data.users)
             this.username = res.data.users[0].username
             this.profileUrl = res.data.users[0].profileUrl
-            console.log(this.profileUrl)
         } catch (err) {
             console.log(err)
         }

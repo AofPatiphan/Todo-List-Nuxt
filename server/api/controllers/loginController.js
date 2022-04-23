@@ -22,7 +22,6 @@ const execute = async () => {
     }),
   });
   const data = await fetchResponse.json();
-  console.log("DEBUG: ", data);
   return data;
 };
 
@@ -41,7 +40,7 @@ exports.login = async (req, res) => {
   }
 
   const payload = {
-    sub: user[0].id.toString(),
+    id: user[0].id.toString(),
     name: username,
     iat: Date.now() / 1000,
     iss: "https://myapp.com",

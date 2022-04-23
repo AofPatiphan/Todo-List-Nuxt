@@ -28,10 +28,26 @@ export default {
   buildModules: ["@nuxt/postcss8"],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ["@nuxtjs/axios", "@nuxtjs/auth-next"],
+  modules: ["@nuxtjs/axios", "@nuxtjs/auth-next", "@nuxtjs/apollo"],
   axios: {
     baseURL: "https://todosnuxt.hasura.app/api/rest", // Used as fallback if no runtime config is provided
   },
+  apollo: {
+    clientConfigs: {
+      default: "~/apollo/client-configs/default.js",
+    },
+  },
+  // apollo: {
+  //   clientConfigs: {
+  //     default: {
+  //       httpEndpoint: "https://todosnuxt.hasura.app/v1/graphql",
+  //     },
+  //     wsEndpoint: {
+  //       wsEndpoint: "ws://todosnuxt.hasura.app/v1/graphql",
+  //     },
+  //   },
+  // },
+
   auth: {
     redirect: {
       login: "/login",

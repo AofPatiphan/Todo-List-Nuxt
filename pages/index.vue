@@ -44,10 +44,12 @@
 </template>
 
 <script>
-import { getTodo } from '../utils/todoApi'
+import { getUserData } from '../utils/userApi'
 import CreateForm from '../components/CreateForm.vue'
 import TodoItem from '../components/TodoItem.vue'
 import CloseEditIcon from '../components/CloseEditIcon.vue'
+import { MySubscription } from '../gql/subscription/todo'
+
 export default {
   middleware: "auth",
   head: {
@@ -57,23 +59,39 @@ export default {
     return {
       pendingTodo: [],
       successTodo: [],
-      openEdit: false
+      openEdit: false,
     };
   },
   layout: "MainLayout",
   async mounted() {
-    const res = await getTodo()
-    const pending = res.data.todos.filter(item => item.todos_active === false)
-    const success = res.data.todos.filter(item => item.todos_active === true)
-    this.pendingTodo = pending
-    this.successTodo = success
+    const user = await getUserData();
+    const observer = await this.$apollo.subscribe({
+      query: MySubscription,
+      variables: { id: user.sub }
+    })
 
+    const test = (data) => {
+      const pending = data.filter(item => item.todos_active === false)
+      const success = data.filter(item => item.todos_active === true)
+      this.pendingTodo = pending
+      this.successTodo = success
+    }
+
+    observer.subscribe({
+      next(data) {
+        test(data.data.todos)
+
+      },
+      error(error) {
+        console.error(error)
+      },
+    })
   },
   components: { CreateForm, TodoItem, CloseEditIcon },
   methods: {
     handleClickOpenEdit() {
       this.openEdit = !this.openEdit
     }
-  }
+  },
 }
 </script>

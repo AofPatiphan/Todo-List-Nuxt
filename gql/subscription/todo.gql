@@ -1,0 +1,15 @@
+subscription  MySubscription($id: Int!) {
+  todos(where: {todos_users: {_eq: $id}}, order_by: {updated_at: desc}) {
+    id
+    todos_list
+    todos_active
+    created_at
+    updated_at
+    todos_users
+  }
+}
+
+
+
+
+
