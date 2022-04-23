@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { updateTodo } from '../utils/todoApi'
+import { UPDATE_TODO } from '../utils/todoApi'
 export default {
     props: {
         item: {
@@ -51,12 +51,14 @@ export default {
             if (this.item.todos_active) {
                 idx = this.successTodo.findIndex(i => i.id === this.item.id);
             }
-            const res = await updateTodo(this.item.id, this.editText, this.item.todos_active)
-
-            if (res.status === 200 && !this.item.todos_active) {
+            const res = await this.$apollo.mutate({
+                mutation: await UPDATE_TODO(),
+                variables: { id: this.item.id, input: this.editText, status: this.item.todos_active }
+            })
+            if (!this.item.todos_active) {
                 this.pendingTodo.splice(idx, 1, res.data.update_todos.returning[0]);
             }
-            if (res.status === 200 && this.item.todos_active) {
+            if (this.item.todos_active) {
                 this.successTodo.splice(idx, 1, res.data.update_todos.returning[0]);
             }
             this.isEdit.pop()

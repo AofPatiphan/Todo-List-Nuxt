@@ -10,6 +10,15 @@ export const getUserData = async () => {
   return user;
 };
 
+export const getUserId = async () => {
+  try {
+    const user = await getUserData();
+    return user.sub;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const getMe = async () => {
   try {
     const response = await getToken();

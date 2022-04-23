@@ -23,15 +23,6 @@
                             placeholder="Password" v-model="login.password" />
                     </div>
                 </div>
-
-                <!-- <div class="flex items-center justify-end">
-                    <div class="text-sm">
-                        <nuxt-link to="register" class="font-medium text-indigo-600 hover:text-indigo-500"> Create your
-                            account
-                        </nuxt-link>
-                    </div>
-                </div> -->
-
                 <div>
                     <button type="submit" v-if="!isLogin"
                         class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">

@@ -15,7 +15,7 @@ query MyQuery {
   }
 `;
 const execute = async () => {
-  const fetchResponse = await fetch("https://todosnuxt.hasura.app/v1/graphql", {
+  const fetchResponse = await fetch(process.env.HASURA_URI, {
     method: "POST",
     body: JSON.stringify({
       query: HASURA_OPERATION,

@@ -44,11 +44,10 @@
 </template>
 
 <script>
-import { getUserData } from '../utils/userApi'
 import CreateForm from '../components/CreateForm.vue'
 import TodoItem from '../components/TodoItem.vue'
 import CloseEditIcon from '../components/CloseEditIcon.vue'
-import { MySubscription } from '../gql/subscription/todo'
+import { GET_TODO } from '../utils/todoApi'
 
 export default {
   middleware: "auth",
@@ -62,25 +61,20 @@ export default {
       openEdit: false,
     };
   },
-  layout: "MainLayout",
+  layout: "mainLayout",
   async mounted() {
-    const user = await getUserData();
     const observer = await this.$apollo.subscribe({
-      query: MySubscription,
-      variables: { id: user.sub }
+      query: await GET_TODO(),
     })
-
-    const test = (data) => {
+    const updateTodoData = (data) => {
       const pending = data.filter(item => item.todos_active === false)
       const success = data.filter(item => item.todos_active === true)
       this.pendingTodo = pending
       this.successTodo = success
     }
-
     observer.subscribe({
       next(data) {
-        test(data.data.todos)
-
+        updateTodoData(data.data.todos)
       },
       error(error) {
         console.error(error)

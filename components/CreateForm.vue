@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { addTodo } from '../utils/todoApi'
+import { ADD_TODO } from '../utils/todoApi'
 
 export default {
     data() {
@@ -49,14 +49,15 @@ export default {
     methods: {
         async handleClickAddTodo() {
             this.isAdd = true
-            const res = await addTodo(this.todo)
-            if (res) {
-                this.pendingTodo.unshift(res.data.insert_todos_one)
-                this.todo = ''
-            }
+            const res = await this.$apollo.mutate({
+                mutation: await ADD_TODO(),
+                variables: { todo: this.todo }
+            })
+            this.pendingTodo.unshift(res.data.insert_todos_one)
+            this.todo = ''
+
             this.isAdd = false
         }
     },
 }
-
 </script>

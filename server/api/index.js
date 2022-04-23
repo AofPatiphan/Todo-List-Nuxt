@@ -1,12 +1,3 @@
-// const express = require("express");
-// const app = express();
-
-// app.get("/", (req, res) => {
-//   res.send("Hello World - express.js API");
-// });
-
-// module.exports = app;
-
 const express = require("express");
 const bodyParser = require("body-parser");
 const signupRoute = require("./routes/signupRoute");
@@ -17,12 +8,10 @@ const uploadRoute = require("./routes/uploadRoute");
 
 const app = express();
 
-// const cors = require("cors");
-// app.use(cors());
 const cors = require("cors");
 const corsOptions = {
   origin: "*",
-  credentials: true, //access-control-allow-credentials:true
+  credentials: true,
   optionSuccessStatus: 200,
 };
 app.use(cors(corsOptions));

@@ -33,7 +33,7 @@
 
 
 <script>
-import { deleteTodo, updateTodo } from '../utils/todoApi'
+import { DELETE_TODO, UPDATE_TODO } from '../utils/todoApi'
 import EditForm from './EditForm.vue'
 
 export default {
@@ -67,11 +67,14 @@ export default {
                 idx = this.successTodo.findIndex(i => i.id === this.item.id);
             }
             if (window.confirm("Do you want to delete?")) {
-                const res = await deleteTodo(this.item.id);
-                if (res.status === 200 && !this.item.todos_active) {
+                const res = await this.$apollo.mutate({
+                    mutation: await DELETE_TODO(),
+                    variables: { id: this.item.id }
+                })
+                if (!this.item.todos_active) {
                     this.pendingTodo.splice(idx, 1);
                 }
-                if (res.status === 200 && this.item.todos_active) {
+                if (this.item.todos_active) {
                     this.successTodo.splice(idx, 1);
                 }
             }
@@ -85,12 +88,15 @@ export default {
             if (this.item.todos_active) {
                 idx = this.successTodo.findIndex(i => i.id === this.item.id);
             }
-            const res = await updateTodo(this.item.id, this.item.todos_list, !this.item.todos_active);
-            if (res.status === 200 && !this.item.todos_active) {
+            const res = await this.$apollo.mutate({
+                mutation: await UPDATE_TODO(),
+                variables: { id: this.item.id, input: this.item.todos_list, status: !this.item.todos_active }
+            })
+            if (!this.item.todos_active) {
                 this.pendingTodo.splice(idx, 1);
                 this.successTodo.unshift(res.data.update_todos.returning[0]);
             }
-            if (res.status === 200 && this.item.todos_active) {
+            if (this.item.todos_active) {
                 this.successTodo.splice(idx, 1);
                 this.pendingTodo.unshift(res.data.update_todos.returning[0]);
             }
