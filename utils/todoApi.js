@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-import axios from "../config/axios";
+// import axios from "../config/axios";
 import { getUserId } from "./userApi";
 
 export const GET_TODO = async () => {

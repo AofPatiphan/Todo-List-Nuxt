@@ -1,5 +1,6 @@
 const passport = require("passport");
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const { Strategy, ExtractJwt } = require("passport-jwt");
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -15,7 +16,7 @@ query MyQuery {
   }
 `;
 const execute = async () => {
-  const fetchResponse = await fetch(process.env.HASURA_URI, {
+  const fetchResponse = await fetch(process.env.HASURA_URI as any, {
     method: "POST",
     body: JSON.stringify({
       query: HASURA_OPERATION,
@@ -25,10 +26,10 @@ const execute = async () => {
   return data;
 };
 
-const jwtStrategy = new Strategy(options, async (payload, done) => {
+const jwtStrategy = new Strategy(options, async (payload: any, done: any) => {
   const { data, errors } = await execute();
   const user = await data.users.filter(
-    (item) => item.username === payload.name
+    (item: any) => item.username === payload.name
   );
   if (user) {
     done(null, user);

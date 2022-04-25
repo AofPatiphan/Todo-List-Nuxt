@@ -1,5 +1,6 @@
 const cloudinary = require("cloudinary").v2;
 require("dotenv").config();
+import { Request, Response, NextFunction } from "express";
 
 cloudinary.config({
   cloud_name: process.env.CLOUR_NAME,
@@ -7,7 +8,7 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-const uploadImage = async (req, res, next) => {
+const uploadImage = async (req: Request, res: Response, next: NextFunction) => {
   try {
     console.log("Hello");
     const fileStr = req.body.data;

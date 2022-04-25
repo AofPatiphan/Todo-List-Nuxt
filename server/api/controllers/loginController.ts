@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const bcrypt = require("bcryptjs");
-
+import { Request, Response } from "express";
 const HASURA_OPERATION = `
 query MyQuery {
     users {
@@ -25,11 +26,11 @@ const execute = async () => {
   return data;
 };
 
-exports.login = async (req, res) => {
+exports.login = async (req: Request, res: Response) => {
   const { username, password } = req.body.input;
   const { data, errors } = await execute();
 
-  const user = await data.users.filter((item) => item.username === username);
+  const user = await data.users.filter((item: any) => item.username === username);
   if (!user[0]) {
     return res.status(400).json({ message: "username is incorrect" });
   }

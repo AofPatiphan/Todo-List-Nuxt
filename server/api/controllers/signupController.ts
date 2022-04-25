@@ -1,6 +1,7 @@
-const fetch = require("node-fetch");
+// const fetch = require("node-fetch");
+import fetch from "node-fetch";
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import { Request, Response } from "express";
 
 const HASURA_OPERATION = `
 mutation MyMutation($username:String!,$password:String!,$profileUrl:String!) {
@@ -14,7 +15,7 @@ mutation MyMutation($username:String!,$password:String!,$profileUrl:String!) {
 }
 `;
 
-const execute = async (variables) => {
+const execute = async (variables: any) => {
   const fetchResponse = await fetch("https://todosnuxt.hasura.app/v1/graphql", {
     method: "POST",
     body: JSON.stringify({
@@ -26,7 +27,7 @@ const execute = async (variables) => {
   return data;
 };
 
-exports.signup = async (req, res) => {
+exports.signup = async (req: Request, res: Response) => {
   const { username, password, confirmPassword, profileUrl } = req.body.input;
 
   if (password !== confirmPassword)
