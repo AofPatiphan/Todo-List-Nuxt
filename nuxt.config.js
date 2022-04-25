@@ -34,7 +34,7 @@ export default {
   },
   apollo: {
     clientConfigs: {
-      default: "~/apollo/client-configs/default.js",
+      default: "~/apollo/client-configs/default.ts",
     },
   },
   // apollo: {
