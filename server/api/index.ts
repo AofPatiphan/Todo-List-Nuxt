@@ -1,4 +1,5 @@
-const express = require("express");
+// const express = require("express");
+import express from 'express'
 const bodyParser = require("body-parser");
 const signupRoute = require("./routes/signupRoute");
 const loginRoute = require("./routes/loginRoute");
@@ -29,7 +30,7 @@ app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   console.log("Hello world");
-  res.status(200).json({ message: "Hello world" });
+  return res.json()
 });
 
 app.use("/login", loginRoute);

@@ -9,6 +9,7 @@ cloudinary.config({
 
 const uploadImage = async (req, res, next) => {
   try {
+    console.log("Hello");
     const fileStr = req.body.data;
     const uploadResponse = await cloudinary.uploader.upload(fileStr, {
       folder: "Todo HX",
