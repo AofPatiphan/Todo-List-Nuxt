@@ -67,11 +67,11 @@ export default {
             method: "post",
           },
           logout: {
-            url: "http://localhost:3000/api/signout",
+            url: "https://bd0e-2405-9800-ba00-1fef-c5c6-b455-d633-7882.ngrok.io/api/signout",
             method: "delete",
           },
           user: {
-            url: "http://localhost:3000/api/user/me",
+            url: "https://bd0e-2405-9800-ba00-1fef-c5c6-b455-d633-7882.ngrok.io/api/user/me",
             method: "get",
           },
         },
