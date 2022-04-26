@@ -2,12 +2,12 @@ const passport = require("passport");
 // const fetch = require("node-fetch");
 import fetch from "node-fetch";
 const { Strategy, ExtractJwt } = require("passport-jwt");
-const options = {
+const options: {} = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
   secretOrKey: process.env.JWT_SECRET_KEY,
 };
 
-const HASURA_OPERATION = `
+const HASURA_OPERATION: string = `
 query MyQuery {
     users {
       id

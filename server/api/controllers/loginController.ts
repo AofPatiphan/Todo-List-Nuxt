@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 import fetch from "node-fetch";
 const bcrypt = require("bcryptjs");
 import { Request, Response } from "express";
-const HASURA_OPERATION = `
+const HASURA_OPERATION: string = `
 query MyQuery {
     users {
       id

@@ -45,22 +45,16 @@ export default {
         async handleClickSubmitEdit() {
             this.isSave = true
             let idx
-            if (!this.item.todos_active) {
-                idx = this.pendingTodo.findIndex(i => i.id === this.item.id);
-            }
-            if (this.item.todos_active) {
-                idx = this.successTodo.findIndex(i => i.id === this.item.id);
-            }
+            if (!this.item.todos_active) idx = this.pendingTodo.findIndex(i => i.id === this.item.id);
+
+            if (this.item.todos_active) idx = this.successTodo.findIndex(i => i.id === this.item.id);
+
             const res = await this.$apollo.mutate({
                 mutation: await UPDATE_TODO(),
                 variables: { id: this.item.id, input: this.editText, status: this.item.todos_active }
             })
-            if (!this.item.todos_active) {
-                this.pendingTodo.splice(idx, 1, res.data.update_todos.returning[0]);
-            }
-            if (this.item.todos_active) {
-                this.successTodo.splice(idx, 1, res.data.update_todos.returning[0]);
-            }
+            if (!this.item.todos_active) this.pendingTodo.splice(idx, 1, res.data.update_todos.returning[0]);
+            if (this.item.todos_active) this.successTodo.splice(idx, 1, res.data.update_todos.returning[0]);
             this.isEdit.pop()
             this.isSave = false
 

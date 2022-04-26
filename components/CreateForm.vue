@@ -49,13 +49,15 @@ export default {
     methods: {
         async handleClickAddTodo() {
             this.isAdd = true
-            const res = await this.$apollo.mutate({
-                mutation: await ADD_TODO(),
-                variables: { todo: this.todo }
-            })
-            this.pendingTodo.unshift(res.data.insert_todos_one)
+            if (this.todo) {
+                const res = await this.$apollo.mutate({
+                    mutation: await ADD_TODO(),
+                    variables: { todo: this.todo }
+                })
+                this.pendingTodo.unshift(res.data.insert_todos_one)
+            }
+            if (!this.todo) window.alert("Please input your activity.")
             this.todo = ''
-
             this.isAdd = false
         }
     },

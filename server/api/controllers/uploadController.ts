@@ -16,8 +16,19 @@ const uploadImage = async (req: Request, res: Response, next: NextFunction) => {
       folder: "Todo HX",
       use_filename: true,
     });
+    console.log(uploadResponse)
 
     res.status(201).json({ url: uploadResponse.url });
+  } catch (err) {
+    next(err);
+  }
+};
+const deleteImage = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    console.log("Delete");
+    const fileStr = req.body
+    await cloudinary.uploader.destroy('mini-banner/desktop/t7zkoqns2xivp35h2zzt');
+    res.status(201).json();
   } catch (err) {
     next(err);
   }
@@ -25,4 +36,5 @@ const uploadImage = async (req: Request, res: Response, next: NextFunction) => {
 
 module.exports = {
   uploadImage,
+  deleteImage
 };
